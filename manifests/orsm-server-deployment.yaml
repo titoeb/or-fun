@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: osrm-server-andorra-deployment
+  labels:
+    app: osrm-server-andorra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: osrm-server-andorra
+  template:
+    metadata:
+      labels:
+        app:  osrm-server-andorra
+    spec:
+      containers:
+      - name: osrm-server-andorra
+        image: titoeb/osrm-server
+        args: ["osrm-routed", "--algorithm", "mld", "/data/andorra-latest.osrm"]
+        env:
+          - name: TILE_LINK
+            value: http://download.geofabrik.de/europe/andorra-latest.osm.pbf
+        ports:
+        - containerPort: 5000 
